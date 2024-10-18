@@ -32,17 +32,22 @@ def start_game():
             return self.value == '.'
 
         def click_button(self, value='X'):
+            """ Command click in button """
             if self.btn['text'] == '.':
                 self.btn['text'] = value
                 self.value = value
 
-                if check_win(value) == 'ok':
-                    start_game()
-                else:
-                    if value == 'X':
-                        random_pk()
+                self.check_win_and_next_move(value)
+
+        def check_win_and_next_move(self, value):
+            if check_win(value) == 'ok':
+                start_game()
+            else:
+                if value == 'X':
+                    random_pk()
 
     def random_pk():
+        """ click computer random place """
         if check_tie():
             k = pole[randrange(0, 3)][randrange(0, 3)]
             while not k:
@@ -50,6 +55,7 @@ def start_game():
             k.click_button('O')
 
     def check_tie():
+        """ check tie """
         if not any(i.value == '.' for j in pole for i in j):
             messagebox.showinfo('bmi-pythonguides', 'НИЧЬЯ  😱')
             start_game()
@@ -57,6 +63,7 @@ def start_game():
             return True
 
     def check_win(value):
+        """ check win in pole """
         if any(all(i.value == value for i in pole[j]) for j in range(3)):
             return win_print(value)
         if any(all(pole[j][i].value == value for i in range(3)) for j in range(3)):
